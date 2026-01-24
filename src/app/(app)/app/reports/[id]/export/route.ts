@@ -6,15 +6,16 @@ import { stringify } from "csv-stringify/sync";
 
 export async function GET(
   _request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const session = await getServerAuthSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const report = await prisma.report.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { upload: true, rows: true },
   });
 
