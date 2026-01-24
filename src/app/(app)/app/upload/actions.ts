@@ -50,11 +50,11 @@ export async function uploadBoq(
   const report = await prisma.report.create({
     data: {
       uploadId: upload.id,
-      summaryJson: validation.summary,
+      summaryJson: validation.summary as unknown as object,
       rows: {
         create: validation.rows.map((item) => ({
-          rowJson: item.row,
-          flagsJson: item.flags,
+          rowJson: JSON.parse(JSON.stringify(item.row)) as object,
+          flagsJson: item.flags as unknown as object,
         })),
       },
     },
