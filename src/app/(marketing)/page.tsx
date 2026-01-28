@@ -26,7 +26,7 @@ export default function HomePage() {
             </h1>
             <p className="text-lg text-muted-foreground">
               Budgets fail because spreadsheets hide rate gaps and weak links
-              between BOQs and cost libraries. (NAME TBD) uploads your BOQ,
+              between BOQs and cost libraries. QuantifyAI uploads your BOQ,
               validates rates against your database, flags anomalies, and
               delivers an auditable budget in hours.
             </p>

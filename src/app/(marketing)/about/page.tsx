@@ -10,7 +10,7 @@ export default function AboutPage() {
           Built to bring certainty to construction budgeting.
         </h1>
         <p className="text-base text-muted-foreground">
-          (NAME TBD) was created to eliminate the costly disconnect between BOQs
+          QuantifyAI was created to eliminate the costly disconnect between BOQs
           and real-world rate data. We help estimators and commercial managers
           validate scope, detect anomalies, and move faster with confidence.
         </p>

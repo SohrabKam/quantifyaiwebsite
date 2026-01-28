@@ -17,7 +17,7 @@ const serifFont = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  title: "(NAME TBD) | BOQ Validation & Automated Budgeting",
+  title: "QuantifyAI | BOQ Validation & Automated Budgeting",
   description:
     "Upload BOQs, validate rates, flag anomalies, and generate auditable budgets fast.",
 };

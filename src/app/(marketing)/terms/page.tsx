@@ -4,7 +4,7 @@ export default function TermsPage() {
       <div className="prose prose-slate max-w-3xl dark:prose-invert">
         <h1>Terms of Service</h1>
         <p>
-          These terms govern your use of (NAME TBD). By accessing the platform,
+          These terms govern your use of QuantifyAI. By accessing the platform,
           you agree to the terms below.
         </p>
         <h2>Use of service</h2>
@@ -24,13 +24,13 @@ export default function TermsPage() {
         </p>
         <h2>Limitation of liability</h2>
         <p>
-          (NAME TBD) is provided “as is” without warranties. We are not liable
+          QuantifyAI is provided “as is” without warranties. We are not liable
           for indirect or consequential damages.
         </p>
         <h2>Contact</h2>
         <p>
           Questions? Email{" "}
-          <a href="mailto:legal@nametbd.com">legal@nametbd.com</a>.
+          <a href="mailto:directors@quantifyai.uk">directors@quantifyai.uk</a>.
         </p>
       </div>
     </div>

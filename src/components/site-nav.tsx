@@ -13,7 +13,7 @@ export async function SiteNav() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-8">
           <Link href="/" className="text-lg font-semibold tracking-tight">
-            (NAME TBD)
+            QuantifyAI
           </Link>
           <nav className="hidden items-center gap-5 text-sm text-muted-foreground md:flex">
             <Link href="/pricing" className="hover:text-foreground">

@@ -5,7 +5,7 @@ export function SiteFooter() {
     <footer className="border-t border-border/60 bg-muted/30">
       <div className="container flex flex-col gap-6 py-10 md:flex-row md:items-center md:justify-between">
         <div className="space-y-2">
-          <div className="text-lg font-semibold">(NAME TBD)</div>
+          <div className="text-lg font-semibold">QuantifyAI</div>
           <p className="max-w-sm text-sm text-muted-foreground">
             Construction BOQ validation and automated budgeting for modern
             commercial teams.

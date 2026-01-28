@@ -4,7 +4,7 @@ export default function PrivacyPage() {
       <div className="prose prose-slate max-w-3xl dark:prose-invert">
         <h1>Privacy Policy</h1>
         <p>
-          (NAME TBD) respects your privacy. This policy explains what we collect
+          QuantifyAI respects your privacy. This policy explains what we collect
           and how we use it.
         </p>
         <h2>Information we collect</h2>
@@ -27,7 +27,7 @@ export default function PrivacyPage() {
         <h2>Contact</h2>
         <p>
           For questions, contact us at{" "}
-          <a href="mailto:privacy@nametbd.com">privacy@nametbd.com</a>.
+          <a href="mailto:directors@quantifyai.uk">directors@quantifyai.uk</a>.
         </p>
       </div>
     </div>

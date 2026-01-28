@@ -1,4 +1,4 @@
-# (NAME TBD) – BOQ Validation & Automated Budgeting
+# QuantifyAI – BOQ Validation & Automated Budgeting
 
 Modern B2B SaaS marketing site, waitlist, and MVP demo for construction BOQ validation.
 
@@ -47,7 +47,7 @@ NextAuth powers authentication with magic link email and a credentials fallback.
 
 Seeded admin:
 
-- Email: `admin@nametbd.com`
+- Email: `directors@quantifyai.uk`
 - Password: `Admin123!`
 
 ## File uploads

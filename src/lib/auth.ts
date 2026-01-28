@@ -35,8 +35,8 @@ export const authOptions: NextAuthOptions = {
         await transport.sendMail({
           to: identifier,
           from: process.env.EMAIL_FROM,
-          subject: "Your magic link for (NAME TBD)",
-          text: `Sign in to (NAME TBD): ${url}`,
+          subject: "Your magic link for QuantifyAI",
+          text: `Sign in to QuantifyAI: ${url}`,
         });
       },
     }),

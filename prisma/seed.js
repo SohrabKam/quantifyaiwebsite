@@ -4,7 +4,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  const adminEmail = "admin@nametbd.com";
+  const adminEmail = "directors@quantifyai.uk";
   const passwordHash = await bcrypt.hash("Admin123!", 10);
 
   const admin = await prisma.user.upsert({

@@ -13,7 +13,7 @@ export async function AppNav() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/app" className="text-lg font-semibold">
-            (NAME TBD)
+            QuantifyAI
           </Link>
           <nav className="hidden items-center gap-4 text-sm text-muted-foreground md:flex">
             <Link href="/app" className="hover:text-foreground">
