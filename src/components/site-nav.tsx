@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/components/user-menu";
 import { Button } from "@/components/ui/button";
 import { getServerAuthSession } from "@/lib/auth";
@@ -31,7 +30,6 @@ export async function SiteNav() {
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           <Button variant="ghost" asChild className="hidden sm:inline-flex">
             <Link href="/early-access">Request Early Access</Link>
           </Button>

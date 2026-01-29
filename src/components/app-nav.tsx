@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/components/user-menu";
 import { Button } from "@/components/ui/button";
 import { getServerAuthSession } from "@/lib/auth";
@@ -28,7 +27,6 @@ export async function AppNav() {
           <Button variant="ghost" size="sm" asChild>
             <Link href="/">Back to site</Link>
           </Button>
-          <ThemeToggle />
           {session ? (
             <UserMenu name={session.user?.name} email={session.user?.email} />
           ) : null}
