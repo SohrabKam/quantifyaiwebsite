@@ -61,4 +61,26 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .demo-clip-frame {
+    animation: demo-fade 9s infinite;
+    opacity: 0;
+  }
+
+  @keyframes demo-fade {
+    0% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    8%,
+    30% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    38%,
+    100% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
 }
