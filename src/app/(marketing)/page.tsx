@@ -7,6 +7,7 @@ import {
   FileSpreadsheet,
   Gauge,
   Layers,
+  Lock,
   ShieldCheck,
   Users,
   Wand2,
@@ -53,6 +54,14 @@ const demoScreens = [
     description: "QS and contractor views with audit trails.",
     type: "roles",
   },
+];
+
+const proofLogos = [
+  "QS Design Partners",
+  "Main Contractor Groups",
+  "Cost Consultants",
+  "Commercial Managers",
+  "Pre-Construction Teams",
 ];
 
 const clipFrames = [
@@ -121,52 +130,62 @@ function ScreenPreview({ type }: { type: string }) {
     case "processing":
       return (
         <div className="space-y-3">
-          {["Parsing scope", "Building WBS", "NRM2 checks", "QA complete"].map(
-            (step, index) => (
-              <div
-                key={step}
-                className="flex items-center gap-3 rounded-md border border-border/60 bg-muted/40 px-3 py-2"
-              >
-                <div className="h-2 w-2 rounded-full bg-primary/70" />
-                <span className="text-xs text-muted-foreground">{step}</span>
-                {index === 3 ? (
-                  <span className="ml-auto text-[10px] uppercase tracking-[0.2em] text-primary">
-                    Done
-                  </span>
-                ) : (
-                  <span className="ml-auto text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                    Running
-                  </span>
-                )}
-              </div>
-            )
-          )}
+          {[
+            "Parsing scope",
+            "Building WBS",
+            "NRM2 checks",
+            "QA complete",
+          ].map((step, index) => (
+            <div
+              key={step}
+              className="flex items-center gap-3 rounded-md border border-border/60 bg-muted/40 px-3 py-2"
+            >
+              <div className="h-2 w-2 rounded-full bg-primary/70" />
+              <span className="text-xs text-muted-foreground">{step}</span>
+              {index === 3 ? (
+                <span className="ml-auto text-[10px] uppercase tracking-[0.2em] text-primary">
+                  Done
+                </span>
+              ) : (
+                <span className="ml-auto text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                  Running
+                </span>
+              )}
+            </div>
+          ))}
         </div>
       );
     case "boq":
       return (
-        <div className="space-y-3">
-          <div className="grid grid-cols-5 gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+        <div className="space-y-2">
+          <div className="grid grid-cols-[0.6fr_2.2fr_0.6fr_0.9fr_1fr] gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
             <span>Code</span>
-            <span className="col-span-2">Description</span>
+            <span>Description</span>
+            <span>Unit</span>
             <span>Qty</span>
             <span>Total</span>
           </div>
           {[
-            ["2.1", "Substructure concrete", "420", "£128k"],
-            ["3.2", "Steel frame", "260", "£214k"],
-            ["5.4", "External glazing", "98", "£156k"],
+            ["2.1", "Substructure concrete", "m3", "420", "£128,400"],
+            ["3.2", "Steel frame", "t", "260", "£214,800"],
+            ["5.4", "External glazing", "m2", "98", "£156,100"],
+            ["6.3", "Raised access floor", "m2", "1,120", "£89,600"],
           ].map((row) => (
             <div
               key={row[0]}
-              className="grid grid-cols-5 items-center gap-2 rounded-md border border-border/60 bg-muted/30 px-3 py-2 text-xs"
+              className="grid grid-cols-[0.6fr_2.2fr_0.6fr_0.9fr_1fr] items-center gap-2 rounded-md border border-border/60 bg-muted/30 px-3 py-2 text-xs"
             >
               <span className="font-medium text-foreground">{row[0]}</span>
-              <span className="col-span-2 text-muted-foreground">{row[1]}</span>
+              <span className="text-muted-foreground">{row[1]}</span>
               <span className="text-muted-foreground">{row[2]}</span>
-              <span className="font-semibold text-foreground">{row[3]}</span>
+              <span className="text-muted-foreground">{row[3]}</span>
+              <span className="font-semibold text-foreground">{row[4]}</span>
             </div>
           ))}
+          <div className="flex items-center justify-between rounded-md border border-border/60 bg-background/60 px-3 py-2 text-xs">
+            <span className="text-muted-foreground">Total (excl. prelims)</span>
+            <span className="font-semibold text-foreground">£1,248,300</span>
+          </div>
         </div>
       );
     case "edit":
@@ -261,19 +280,6 @@ function ScreenPreview({ type }: { type: string }) {
           ))}
         </div>
       );
-    case "integrations":
-      return (
-        <div className="grid grid-cols-2 gap-2">
-          {["CostX", "WinQS", "Candy", "API"].map((tool) => (
-            <div
-              key={tool}
-              className="flex items-center justify-center rounded-md border border-border/60 bg-muted/30 py-4 text-xs font-semibold"
-            >
-              {tool}
-            </div>
-          ))}
-        </div>
-      );
     default:
       return null;
   }
@@ -282,7 +288,7 @@ function ScreenPreview({ type }: { type: string }) {
 function DemoClip({ frames }: { frames: typeof clipFrames }) {
   return (
     <div className="relative h-64 overflow-hidden rounded-2xl border border-border/70 bg-card p-4 shadow-soft">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(30,64,175,0.15),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(30,64,175,0.18),transparent_60%)]" />
       {frames.map((frame, index) => (
         <div
           key={frame.title}
@@ -309,15 +315,35 @@ function DemoClip({ frames }: { frames: typeof clipFrames }) {
   );
 }
 
+function PreviewFrame({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="rounded-2xl border border-border/70 bg-card shadow-soft">
+      <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
+        <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+          {title}
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-muted-foreground/60" />
+          <span className="h-2 w-2 rounded-full bg-muted-foreground/60" />
+          <span className="h-2 w-2 rounded-full bg-muted-foreground/60" />
+        </div>
+      </div>
+      <div className="p-4">{children}</div>
+    </div>
+  );
+}
+
 export default function HomePage() {
   return (
     <div className="relative overflow-hidden">
-      <div className="absolute inset-x-0 top-[-280px] -z-10 h-[520px] bg-[radial-gradient(circle_at_top,rgba(30,64,175,0.18),transparent_65%)]" />
-      <div className="container py-16 md:py-24">
-        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="absolute inset-0 -z-10 bg-grid opacity-20" />
+      <div className="absolute inset-x-0 top-[-260px] -z-10 h-[520px] bg-[radial-gradient(circle_at_top,rgba(30,64,175,0.22),transparent_65%)]" />
+
+      <div className="container py-20 md:py-28">
+        <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div className="space-y-6">
             <Badge variant="secondary">AI-generated BOQs for QS teams</Badge>
-            <h1 className="text-balance text-4xl font-semibold tracking-tight md:text-5xl">
+            <h1 className="text-balance text-4xl font-semibold tracking-tight md:text-6xl">
               A smarter, faster way to build BOQs.
             </h1>
             <p className="text-lg text-muted-foreground">
@@ -352,20 +378,10 @@ export default function HomePage() {
             </div>
           </div>
           <div className="relative">
-            <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-soft">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Demo preview
-                  </p>
-                  <h3 className="mt-2 text-lg font-semibold">
-                    Generated BOQ Summary
-                  </h3>
-                </div>
-                <Badge>Excel ready</Badge>
-              </div>
+            <PreviewFrame title="Generated BOQ summary">
+              <ScreenPreview type="boq" />
               <Separator className="my-4" />
-              <div className="space-y-4">
+              <div className="grid gap-3 md:grid-cols-3">
                 {[
                   {
                     title: "Work packages",
@@ -378,27 +394,27 @@ export default function HomePage() {
                     detail: "Auto-generated",
                   },
                   {
-                    title: "QS adjustments",
-                    value: "14 edits",
-                    detail: "Logged with audit trail",
+                    title: "QS edits",
+                    value: "14 changes",
+                    detail: "Audit trail logged",
                   },
                 ].map((item) => (
                   <div
                     key={item.title}
-                    className="rounded-xl border border-border/60 bg-muted/40 p-4"
+                    className="rounded-xl border border-border/60 bg-muted/40 p-3 text-xs"
                   >
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="font-medium">{item.title}</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">{item.title}</span>
                       <span className="text-primary">{item.value}</span>
                     </div>
-                    <p className="mt-1 text-xs text-muted-foreground">
+                    <p className="mt-1 text-[11px] text-muted-foreground">
                       {item.detail}
                     </p>
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="absolute -bottom-6 -left-6 hidden rounded-2xl border border-border/80 bg-background/80 p-4 shadow-soft lg:block">
+            </PreviewFrame>
+            <div className="absolute -bottom-6 -left-6 hidden rounded-2xl border border-border/80 bg-background/90 p-4 shadow-soft lg:block">
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 Time to first BOQ
               </p>
@@ -413,42 +429,29 @@ export default function HomePage() {
         </div>
       </div>
 
-      <section className="bg-muted/40 py-14">
-        <div className="container grid gap-8 md:grid-cols-3">
-          {[
-            {
-              title: "Real-time BOQ generation",
-              description:
-                "Instantly build structured BOQs from your scope and specs.",
-            },
-            {
-              title: "Smart structuring",
-              description:
-                "AI-driven construction logic aligns to NRM2/NRM3 standards.",
-            },
-            {
-              title: "Specification + quantity automation",
-              description:
-                "Auto-calc quantities and specs with QS-ready detail.",
-            },
-          ].map((item) => (
-            <Card key={item.title}>
-              <CardHeader>
-                <CardTitle className="text-base">{item.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">
-                {item.description}
-              </CardContent>
-            </Card>
-          ))}
+      <section className="border-y border-border/50 bg-muted/20">
+        <div className="container py-8">
+          <div className="flex flex-wrap items-center justify-between gap-4 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            <span>Trusted by early design partners</span>
+            <div className="flex flex-wrap gap-3">
+              {proofLogos.map((logo) => (
+                <span
+                  key={logo}
+                  className="rounded-full border border-border/60 bg-background/60 px-3 py-1"
+                >
+                  {logo}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="container py-16 md:py-20">
-        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+      <section className="container py-20">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-4">
             <Badge variant="outline">How it works</Badge>
-            <h2 className="text-3xl font-semibold">
+            <h2 className="text-3xl font-semibold md:text-4xl">
               From brief to BOQ in four steps.
             </h2>
             <p className="text-sm text-muted-foreground">
@@ -502,12 +505,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-background py-16">
+      <section className="bg-muted/20 py-20">
         <div className="container space-y-10">
           <div className="flex items-center justify-between">
             <div>
               <Badge variant="secondary">Demo gallery</Badge>
-              <h2 className="mt-3 text-3xl font-semibold">
+              <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
                 Investor-ready screens, built for QS workflows.
               </h2>
             </div>
@@ -516,71 +519,38 @@ export default function HomePage() {
             </Button>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-border/70 bg-card p-5 shadow-soft">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Primary screen
-                  </p>
-                  <h3 className="mt-2 text-lg font-semibold">
-                    BOQ structure with Excel-ready output
-                  </h3>
-                </div>
-                <Badge>NRM2</Badge>
-              </div>
-              <Separator className="my-4" />
+            <PreviewFrame title="BOQ structure with Excel-ready output">
               <ScreenPreview type="boq" />
-            </div>
+            </PreviewFrame>
             <div className="grid gap-6">
               {demoScreens.slice(0, 3).map((screen) => (
-                <div
-                  key={screen.title}
-                  className="rounded-2xl border border-border/70 bg-card p-4 shadow-soft"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                        {screen.title}
-                      </p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {screen.description}
-                      </p>
-                    </div>
-                    <Badge variant="outline">Preview</Badge>
-                  </div>
-                  <div className="mt-3 rounded-xl border border-border/60 bg-muted/30 p-3">
-                    <ScreenPreview type={screen.type} />
-                  </div>
-                </div>
+                <PreviewFrame key={screen.title} title={screen.title}>
+                  <p className="mb-3 text-sm text-muted-foreground">
+                    {screen.description}
+                  </p>
+                  <ScreenPreview type={screen.type} />
+                </PreviewFrame>
               ))}
             </div>
           </div>
-          <div className="grid gap-6 md:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-3">
             {demoScreens.slice(3).map((screen) => (
-              <div
-                key={screen.title}
-                className="rounded-2xl border border-border/70 bg-card p-4 text-sm shadow-soft"
-              >
-                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  {screen.title}
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
+              <PreviewFrame key={screen.title} title={screen.title}>
+                <p className="mb-3 text-sm text-muted-foreground">
                   {screen.description}
                 </p>
-                <div className="mt-3 rounded-xl border border-border/60 bg-muted/30 p-3">
-                  <ScreenPreview type={screen.type} />
-                </div>
-              </div>
+                <ScreenPreview type={screen.type} />
+              </PreviewFrame>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="container py-16">
-        <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
+      <section className="container py-20">
+        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="space-y-4">
             <Badge variant="outline">Core capabilities</Badge>
-            <h2 className="text-3xl font-semibold">
+            <h2 className="text-3xl font-semibold md:text-4xl">
               Built for QS and main contractor teams.
             </h2>
             <p className="text-sm text-muted-foreground">
@@ -639,11 +609,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-muted/30 py-16">
-        <div className="container grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+      <section className="bg-muted/30 py-20">
+        <div className="container grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="space-y-4">
             <Badge variant="secondary">Key benefits</Badge>
-            <h2 className="text-3xl font-semibold">Deliver BOQs in hours.</h2>
+            <h2 className="text-3xl font-semibold md:text-4xl">
+              Deliver BOQs in hours.
+            </h2>
             <p className="text-sm text-muted-foreground">
               Compress timelines while preserving QS quality and auditability.
             </p>
@@ -683,11 +655,72 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="container py-16">
+      <section className="container py-20">
+        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="space-y-4">
+            <Badge variant="outline">Security & access</Badge>
+            <h2 className="text-3xl font-semibold md:text-4xl">
+              Enterprise-ready controls.
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Secure data handling, role access, and audit-ready history built in
+              from day one.
+            </p>
+            <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+              {["Role-based access", "Audit trail", "API ready"].map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-border/70 bg-muted/30 px-3 py-1"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            {[
+              {
+                icon: Lock,
+                title: "Secure access",
+                description: "Dedicated roles for QS, contractor, and client.",
+              },
+              {
+                icon: ShieldCheck,
+                title: "Audit-friendly",
+                description: "Track edits, approvals, and export history.",
+              },
+              {
+                icon: FileSpreadsheet,
+                title: "Data portability",
+                description: "Excel exports align with existing standards.",
+              },
+              {
+                icon: Layers,
+                title: "System integration",
+                description: "Connect existing rate databases and workflows.",
+              },
+            ].map((item) => (
+              <Card key={item.title}>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-sm">
+                    <item.icon className="h-4 w-4 text-primary" />
+                    {item.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground">
+                  {item.description}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="container py-20">
         <div className="flex items-center justify-between">
           <div>
             <Badge variant="outline">Demo clips</Badge>
-            <h2 className="mt-3 text-3xl font-semibold">
+            <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
               Short walkthroughs for decks and site embeds.
             </h2>
           </div>

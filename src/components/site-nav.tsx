@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { BrandWordmark } from "@/components/brand-wordmark";
 import { UserMenu } from "@/components/user-menu";
 import { Button } from "@/components/ui/button";
 import { getServerAuthSession } from "@/lib/auth";
@@ -11,9 +12,7 @@ export async function SiteNav() {
     <header className="border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-8">
-          <Link href="/" className="text-lg font-semibold tracking-tight">
-            QuantifyAI
-          </Link>
+          <BrandWordmark />
           <nav className="hidden items-center gap-5 text-sm text-muted-foreground md:flex">
             <Link href="/pricing" className="hover:text-foreground">
               Pricing
